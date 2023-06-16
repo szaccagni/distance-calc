@@ -2,8 +2,9 @@ import { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-export default function Map({ manualMarker1, setManualMarker1, manualMarker2, setManualMarker2, setlocation1, setlocation2, setError, pageStyle }) {
+export default function Map({ manualMarker1, setManualMarker1, manualMarker2, setManualMarker2, setlocation1, setlocation2, setError, pageStyle, clearMarkers, setClearMarkers }) {
   const mapContainerRef = useRef(null);
+  const markers = [];
 
   useEffect(() => {
     mapboxgl.accessToken = 'pk.eyJ1Ijoic3phY2NhZ25pIiwiYSI6ImNsaHFpMzI5OTA1MTYzcm13bmpvMjZ5YnAifQ.zV1QaHivm1i8M0p8XSk6BA';
@@ -18,11 +19,17 @@ export default function Map({ manualMarker1, setManualMarker1, manualMarker2, se
     let marker1 = ''
     let marker2 = ''
 
+    if (clearMarkers) {
+        markers.forEach(marker => marker.remove());
+        setClearMarkers(false)
+    }
+
     if (manualMarker1 !== '') {
         console.log('1')
         const coords = manualMarker1.split(',').map(el => el.trim())
         try {
             const marker = new mapboxgl.Marker().setLngLat(coords).addTo(map);
+            markers.push(marker)
             setError('')
             marker.getElement().addEventListener('click', (event) => {
                 event.stopPropagation();
@@ -97,12 +104,7 @@ export default function Map({ manualMarker1, setManualMarker1, manualMarker2, se
             setlocation2(`${coordinates.lng}, ${coordinates.lat}`)
         }
     });
-    // map.setZoom(1);
-    //    Cleanup
-    // return () => {
-    //   map.remove();
-    // };
-  }, [manualMarker1, manualMarker2]);
+  }, [manualMarker1, manualMarker2, clearMarkers]);
 
   return <div className='map-container' ref={mapContainerRef} style={pageStyle}/>;
 }

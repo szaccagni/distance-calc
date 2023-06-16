@@ -14,6 +14,7 @@ export default function App() {
   const [error, setError] = useState('')
   const [distance, setDistance] = useState('')
   const [pageStyle, setPageStyle] = useState({})
+  const [clearMarkers, setClearMarkers] = useState(false)
 
   function handleClick() {
     const result = calculateDistance(location1, location2)
@@ -29,6 +30,7 @@ export default function App() {
     setError('')
     setDistance('')
     setPageStyle({})
+    setClearMarkers(true)
   }
 
   return (
@@ -42,7 +44,7 @@ export default function App() {
             <li>Finally, you can clear locations by clicking the marker</li>
           </ul>
         </div>
-        <Map manualMarker1={manualMarker1} setManualMarker1={setManualMarker1} manualMarker2={manualMarker2} setManualMarker2={setManualMarker2} setlocation1={setlocation1} location2={location2} setlocation2={setlocation2} setError={setError} pageStyle={pageStyle}/>
+        <Map manualMarker1={manualMarker1} setManualMarker1={setManualMarker1} manualMarker2={manualMarker2} setManualMarker2={setManualMarker2} setlocation1={setlocation1} location2={location2} setlocation2={setlocation2} setError={setError} pageStyle={pageStyle} clearMarkers={clearMarkers} setClearMarkers={setClearMarkers}/>
       </div>
       {error && <div className='error-msg'>{error}</div>}
       {location1 && location2 && 
